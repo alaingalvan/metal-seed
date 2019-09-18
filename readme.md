@@ -49,7 +49,7 @@ As your project becomes more complex, you'll want to separate files and organize
 ```bash
 ├─ 📂 external/                    # 👶 Dependencies
 │  ├─ 📁 crosswindow/                    # 🖼️ OS Windows
-│  ├─ 📁 crosswindow-graphics/           # 🎨 Vulkan Surface Creation
+│  ├─ 📁 crosswindow-graphics/           # 🎨 Metal Layer Creation
 │  └─ 📁 glm/                            # ➕ Linear Algebra
 ├─ 📂 src/                         # 🌟 Source Files
 │  ├─ 📄 Utils.h                         # ⚙️ Utilities (Load Files, Check Shaders, etc.)
