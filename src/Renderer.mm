@@ -2,6 +2,8 @@
 #import <Metal/Metal.h>
 #import <QuartzCore/CAMetalLayer.h>
 
+using namespace glm;
+
 Renderer::Renderer(xwin::Window& window)
 {
 	initializeAPI(window);
@@ -72,11 +74,11 @@ void Renderer::initializeResources()
 	float zoom = -2.5f;
 	
 	// Update matrices
-	uboVS.projectionMatrix = Matrix4::perspective(45.0f, (float)mViewportSize[0] / (float)mViewportSize[1], 0.01f, 1024.0f);
+	uboVS.projectionMatrix = glm::perspective(45.0f, (float)mViewportSize[0] / (float)mViewportSize[1], 0.01f, 1024.0f);
 	
-	uboVS.viewMatrix = Matrix4::translation(Vector3(0.0f, 0.0f, zoom)) * Matrix4::rotationZ(3.14f);
+	uboVS.viewMatrix = glm::translate(glm::identity<mat4>(), vec3(0.0f, 0.0f, zoom));
 	
-	uboVS.modelMatrix = Matrix4::identity();
+	uboVS.modelMatrix = glm::identity<mat4>();
 	
 	size_t uboSize = sizeof(uboVS);
 	
@@ -86,9 +88,9 @@ void Renderer::initializeResources()
 	NSError* err = nil;
 	
 	// Load shader files, add null terminator to the end.
-	std::vector<char> vertSource = readFile("triangle.vert.msl");
+	std::vector<char> vertSource = readFile("assets/triangle.vert.msl");
 	vertSource.emplace_back(0);
-	std::vector<char> fragSource = readFile("triangle.frag.msl");
+	std::vector<char> fragSource = readFile("assets/triangle.frag.msl");
 	fragSource.emplace_back(0);
 	
 	{
@@ -183,7 +185,7 @@ void Renderer::render()
 	mElapsedTime += 0.001f * time;
 	mElapsedTime = fmodf(mElapsedTime, 6.283185307179586f);
 	
-	uboVS.modelMatrix = Matrix4::rotationY(mElapsedTime);
+	uboVS.modelMatrix = glm::rotate(uboVS.modelMatrix, 0.001f * time, vec3(0.0f, 1.0f, 0.0f));
 	memcpy((mUniformBuffer).contents, &uboVS, sizeof(uboVS));
 	
 	// Create a new command buffer for each render pass to the current drawable
@@ -211,7 +213,7 @@ void Renderer::render()
 	{
 		// Create a render command encoder so we can render into something
 		id<MTLRenderCommandEncoder> renderEncoder =
-		[(mCommandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+		[mCommandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
 		renderEncoder.label = @"MyRenderEncoder";
 		
 		// Set the region of the drawable to which we'll draw.

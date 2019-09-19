@@ -1,5 +1,7 @@
 #pragma once
 
+#import <Metal/Metal.h>
+#import <QuartzCore/CAMetalLayer.h>
 #include "CrossWindow/CrossWindow.h"
 #include "CrossWindow/Graphics.h"
 
@@ -21,16 +23,11 @@
 inline std::vector<char> readFile(const std::string& filename) {
 	std::string path = filename;
 	char pBuf[1024];
-#ifdef XWIN_WIN32
 
-	_getcwd(pBuf, 1024);
-	path = pBuf;
-	path += "\\";
-#else
 	getcwd(pBuf, 1024);
 	path = pBuf;
 	path += "/";
-#endif
+
 	path += filename;
 	std::ifstream file(path, std::ios::ate | std::ios::binary);
 	bool exists = (bool)file;
@@ -116,9 +113,9 @@ protected:
 
 	Vertex mVertexBufferData[3] =
 	{
-	  { { 1.0f,  1.0f, 0.0f },{ 1.0f, 0.0f, 0.0f } },
-	  { { -1.0f,  1.0f, 0.0f },{ 0.0f, 1.0f, 0.0f } },
-	  { { 0.0f, -1.0f, 0.0f },{ 0.0f, 0.0f, 1.0f } }
+	  { { 1.0f,  -1.0f, 0.0f },{ 1.0f, 0.0f, 0.0f } },
+	  { { -1.0f,  -1.0f, 0.0f },{ 0.0f, 1.0f, 0.0f } },
+	  { { 0.0f, 1.0f, 0.0f },{ 0.0f, 0.0f, 1.0f } }
 	};
 
 	uint32_t mIndexBufferData[3] = { 0, 1, 2 };
@@ -134,7 +131,7 @@ protected:
 	} uboVS;
 
 	// The device (aka GPU) we're using to render
-	id<MTLCommandBuffer> mDevice;
+	id<MTLDevice> mDevice;
 
 	CAMetalLayer* mLayer;
 	// The command Queue from which we'll obtain command buffers
