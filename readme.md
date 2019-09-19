@@ -40,8 +40,6 @@ cmake .. -G Xcode
 cmake --build .
 ```
 
-In order for the running app to work properly, you must set the working directory to the root of the repo by going to `Edit Scheme > Options > Use Custom Working Directory`.
-
 > Refer to [this blog post on designing C++ libraries and apps](https://alain.xyz/blog/designing-a-cpp-library) for more details on CMake, Git Submodules, etc.
 
 ## Project Layout
