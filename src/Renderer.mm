@@ -21,8 +21,7 @@ Renderer::~Renderer()
 void Renderer::initializeAPI(xwin::Window& window)
 {
 	xgfx::createMetalLayer(&window);
-	xwin::WindowDelegate& del = window.getDelegate();
-	CAMetalLayer* layer = (CAMetalLayer*)del.layer;
+	CAMetalLayer* layer = (CAMetalLayer*)window.layer;
 	mLayer = layer;
 	
 	layer.device = MTLCreateSystemDefaultDevice();

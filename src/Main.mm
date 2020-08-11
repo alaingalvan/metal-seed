@@ -13,7 +13,7 @@ void xmain(int argc, const char** argv)
     windowDesc.visible = true;
     windowDesc.width = 1280;
     windowDesc.height = 720;
-    //windowDesc.fullscreen = true;
+	windowDesc.frame = false;
     window.create(windowDesc, eventQueue);
 
     // 📸 Create a renderer

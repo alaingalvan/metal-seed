@@ -36,6 +36,9 @@ cd build
 # 🍎 To build your XCode project on Mac OS
 cmake .. -G Xcode
 
+# 📱 To build your XCode project targeting iOS / iPad OS
+cmake .. -G Xcode -DCMAKE_SYSTEM_NAME=iOS
+
 # 🔨 Build project
 cmake --build .
 ```

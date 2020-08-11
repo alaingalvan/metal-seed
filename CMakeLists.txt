@@ -74,8 +74,21 @@ file(GLOB_RECURSE FILE_SOURCES RELATIVE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.h
 )
 
+set(ASSETS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/assets)
+file(GLOB_RECURSE RESOURCE_FILES RELATIVE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/assets/*
+)
+
 # Solution Filters
 foreach(source IN LISTS FILE_SOURCES)
+    get_filename_component(source_path "${source}" PATH)
+    string(REPLACE "/" "\\" source_path_msvc "${source_path}")
+    string(REPLACE "src" "" source_path_final "${source_path_msvc}")
+    source_group("${source_path_final}" FILES "${source}")
+endforeach()
+
+foreach(source IN LISTS RESOURCE_FILES)
     get_filename_component(source_path "${source}" PATH)
     string(REPLACE "/" "\\" source_path_msvc "${source_path}")
     string(REPLACE "src" "" source_path_final "${source_path_msvc}")
@@ -88,7 +101,7 @@ endforeach()
 
 xwin_add_executable(
     ${PROJECT_NAME}
-    "${FILE_SOURCES}"
+    "${FILE_SOURCES};${RESOURCE_FILES}"
 )
 
 # =============================================================
@@ -129,3 +142,15 @@ target_compile_definitions(
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/..
 )
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+    MACOSX_BUNDLE TRUE
+    XCODE_ATTRIBUTE_CODE_SIGN_IDENTITY "Alain Galvan"
+    RESOURCE "${RESOURCE_FILES}"
+)
+
+set_source_files_properties(
+    ${ASSETS_PATH} PROPERTIES
+    MACOS_PACKAGE_LOCATION Resources)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES MACOS_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/assets/Info.plist)
