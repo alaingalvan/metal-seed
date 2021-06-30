@@ -5,7 +5,6 @@
 #include "CrossWindow/CrossWindow.h"
 #include "CrossWindow/Graphics.h"
 
-#define GLM_FORCE_SSE42 1
 #define GLM_FORCE_DEFAULT_ALIGNED_GENTYPES 1
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
